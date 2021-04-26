@@ -10,7 +10,7 @@ def trending_now(country_l= ["MX"]):
     original_path= "data"
     date_new, hour,day,month,year= get_dates()
     df_videos= get_videolist(countries = country_list , date = date_new)
-    df_videos.to_csv(f"{original_path}/{month}_{day}_{year}.csv")
+    df_videos.to_csv(f"../{original_path}/{month}_{day}_{year}.csv")
     print("Dataframe Created!") 
     return df_videos
 
