@@ -4,6 +4,12 @@ from datetime import datetime,date
 import time
 import os.path
 from os import path
+import os 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+API_KEY = os.getenv("API_KEY")
+
 
 def trending_now(country_l= ["MX"]): 
     country_list = country_l
@@ -26,7 +32,7 @@ def get_videolist(countries,date):
     empty_list = []
     nextPageToken = None
 
-    api_key= ""
+    api_key= API_KEY
     youtube = build("youtube","v3", developerKey=api_key)
 
     while True:

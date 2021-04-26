@@ -1,8 +1,8 @@
 from helper import build_df
 import pandas as pd
 
-# ['AR', 'AU', 'BO', 'BR', 'CA', 'CL', 'CO', 'CR', 
-# 'DE', 'EC', 'ES', 'FR', 'GB', 'IN', 'IT', 'JP', 'KR', 'MX', 'PE', 'PT', 'US', 'UY']
+# ['AR', 'AU', 'BO', 'BR', 'CA', 'CL', 'CO', 'CR', 'DE', 'EC', 
+# 'ES', 'FR', 'GB', 'IN', 'IT', 'JP', 'KR', 'MX', 'PE', 'PT', 'US', 'UY']
 
 def create_df(list_of_countries):
     countries = list_of_countries

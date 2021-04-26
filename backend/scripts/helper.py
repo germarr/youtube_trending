@@ -1,10 +1,14 @@
 from trending import trending_now
 import pandas as pd
 from googleapiclient.discovery import build
+import os 
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
+API_KEY = os.getenv("API_KEY")
 
 def build_df(listOfCountries):
-    api_key = ""
-    youtube = get_youtube(api_key)
+    youtube = get_youtube(API_KEY)
     videos_trending = trending_now(country_l= listOfCountries)
     ids_trending= videos_trending["video_id"].drop_duplicates().to_list()
     list_of_fifty= getting_fifty_elements_lists(ids_from_videos=ids_trending)
