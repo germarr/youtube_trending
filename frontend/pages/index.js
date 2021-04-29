@@ -1,65 +1,62 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useState } from 'react';
+import Cards from "../components/Cards"
 
-export default function Home() {
+export const getStaticProps = async () =>{
+  const res = await fetch("http://localhost:7777/topfivetest?videos=28")
+  const data = await res.json();
+  return {
+    props:{
+      "items": data}
+  }
+
+}
+
+
+export default function Home({items}) {
+  const [videos,setVideos]=useState(items["items"])
+  const [flags,setFlags]=useState(items["flags"])
+  const [countries, setCountries] =useState(items["list_of_countries"])
+  const [text, setText] = useState("")
+  const [number, setNumber]= useState(28)
+
+  const printOnScreen = async(e) =>{
+    e.preventDefault();
+    try{
+      const res = await fetch(`http://localhost:7777/countries?country=${text}&values=${number}`);
+      const data = await res.json();
+      setVideos(data["items"])
+      setFlags(data["flags"])
+      console.log(data)
+    }catch(err){
+        console.log(err)
+    }
+  };
+
+
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
+        <title>Youtube Trending</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
+        <div className="flex space-x-6 mr-4 ml-4 mb-2 mt-6">
+          <h1 className="font-bold flex-auto">What's Trending on Youtube?</h1>
+          <select value={text} onChange={(e)=>setText(e.target.value)} className="flex-auto">
+              <option>Choose a Country</option>
+              {countries.map(c=>(
+                <option>{c}</option>
+              ))}
+          </select>
+          <button onClick={printOnScreen} className="bg-green-500 rounded-md flex-auto">
+              Search!
+          </button>
         </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 ">
+          {videos.map((item,index)=>(
+            <Cards item={item} index ={index} flags={flags}/>
+          ))}
+        </div>
     </div>
   )
 }
